@@ -4,10 +4,10 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Student
 
-# بيانات الربط المؤقتة مع فيسبوك (سنقوم بتحديثها بمجرد تخطي صفحة التسجيل)
-WHATSAPP_TOKEN = "EAAZAEGDzdLLgBR28ZCOmlRkNhlZCMMner8UOZCtuGQhmTccIS7EJqVIUGWrGWHipVsoPgCi8S7erRrRxx1PUAdhpWczH5DZAYkJip3pDm6abnbOPhZBwZCao8SG6yJwWUKdmZBZCwQtKUvfvXijJZCg8WIBhWh2TovBsf19VISQ0kpNR8UyfVdY74lgGqHPNMcGOyZCXwOsEbNA6qUORMzfVLzJjpMmGys56ixU2VjOedI1Fp2CgcnNVfPTfK956ZBPdFQOJaxoLtNRF9ZBckZCKkPYECQRFp3pmdSYyb3fRtZBvAZDZD"# ضع هنا الـ Temporary Access Token لاحقاً
-PHONE_NUMBER_ID = "1185832321286393"  # ضع هنا الـ Phone Number ID لاحقاً
-VERIFY_TOKEN = "my_secret_token_123" # هذا رمز سري تختاره أنت للربط مع فيسبوك
+# بيانات الربط المحدثة مع فيسبوك
+WHATSAPP_TOKEN = "Q0KPNR8UyfVdY74lgGqHPNMcGOyZCXwOsEbNA6qUORMzfVLzJjpMmGys56ixU2VjOedI1Fp2CgcnNVfPTfK956ZBPdFQOJaxoLtNRF9ZBckZCKkPYECQRFp3pmdSYyb3fRtZBvAZDZD"
+PHONE_NUMBER_ID = "1185832321286393"  
+VERIFY_TOKEN = "my_secret_token_123" 
 
 @csrf_exempt
 def whatsapp_webhook(request):
@@ -41,7 +41,7 @@ def whatsapp_webhook(request):
                 try:
                     student = Student.objects.get(student_id=message_text)
                     
-                    # صياغة نص رسالة النتيجة بشكل منسق وجميل باستخدام الـ Bold والإيموجي
+                    # صياغة نص رسالة النتيجة بشكل منسق وجميل
                     reply_text = f"*أهلاً بك يا ولي أمر الطالب(ة): {student.name}* 🌟\n\n"
                     reply_text += "📊 *إليك بيان درجات الطالب الفترية:*\n"
                     reply_text += "---------------------------------\n"
@@ -60,7 +60,7 @@ def whatsapp_webhook(request):
                     # رد في حال لم يتم العثور على الرقم الأكاديمي
                     reply_text = f"❌ عذراً، الرقم الأكاديمي ({message_text}) غير مسجل لدينا في النظام. يرجى التأكد من الرقم وإعادة المحاولة."
 
-                # إرسال الرد التلقائي فوراً إلى واتساب ولي الأمر عبر الـ API الخاص بـ Meta
+                # استدعاء دالة الإرسال بشكل صحيح وتمرير البيانات لها
                 send_whatsapp_message(from_number, reply_text)
                 
             return JsonResponse({"status": "success"}, status=200)
@@ -68,7 +68,7 @@ def whatsapp_webhook(request):
             return JsonResponse({"error": str(e)}, status=400)
 
 def send_whatsapp_message(to_number, text_message):
-    """دالة مسؤولة عن إرسال الرسائل عبر الـ API لشركة Meta مجاناً"""
+    """دالة مسؤولة عن إرسال الرسائل عبر الـ API لشركة Meta"""
     url = f"https://graph.facebook.com/v17.0/{PHONE_NUMBER_ID}/messages"
     headers = {
         "Authorization": f"Bearer {WHATSAPP_TOKEN}",
@@ -80,5 +80,10 @@ def send_whatsapp_message(to_number, text_message):
         "type": "text",
         "text": {"body": text_message}
     }
-    # إرسال الطلب بشكل خلفي غير مرئي
-    requests.post(url, headers=headers, json=payload)
+    
+    # تنفيذ طلب الإرسال داخل الدالة مع المحاذاة الصحيحة (Indentation)
+    response = requests.post(url, headers=headers, json=payload)
+    
+    # طباعة النتيجة في لوحة التحكم للتأكد
+    print(f"--- Meta API Status Code: {response.status_code} ---")
+    print(f"--- Meta API Response: {response.text} ---")
