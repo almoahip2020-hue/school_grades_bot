@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Student
 
 # بيانات الربط المؤقتة مع فيسبوك (سنقوم بتحديثها بمجرد تخطي صفحة التسجيل)
-WHATSAPP_TOKEN = "EAAG..." # ضع هنا الـ Temporary Access Token لاحقاً
-PHONE_NUMBER_ID = "12345"  # ضع هنا الـ Phone Number ID لاحقاً
+WHATSAPP_TOKEN = "EAAZAEGDzdLLgBR17ex4NLSCAou0iw7YAHRFH8IPs28qsKVfZCbm2sq40dn9ZCjHtZBUVMuxuhsmIpqAQCubf2G6nN3ZAunlv2w5fEtXgrHbZAi78fvtEtjsZBvXTcxfJxghvPObJMqUyCAeGurd9hDwV6XcqTZBZA7xZCGLlRVWM95rWzkeEFZC2f1ZC4OP8eEzZAtUf4NdWC1rA1Ly46GvDcOu6BBmWIKiUSAPqyIwF7ZAySZA8hnyAiUvz4VwvKQ3ZCnnJhI36HwBz5SEgTb3BEf0PgtFJsrK7httqDk7ZAz3WTxwZDZD" # ضع هنا الـ Temporary Access Token لاحقاً
+PHONE_NUMBER_ID = "1185832321286393"  # ضع هنا الـ Phone Number ID لاحقاً
 VERIFY_TOKEN = "my_secret_token_123" # هذا رمز سري تختاره أنت للربط مع فيسبوك
 
 @csrf_exempt
